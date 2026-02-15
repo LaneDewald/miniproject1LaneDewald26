@@ -20,3 +20,13 @@ import pprint
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+
+tickers = ['AAPL', 'PINS', 'GOOGL', 'AMZN', 'RIVN']
+
+stock_data = {}
+for ticker in tickers:
+    ticker_obj = yf.Ticker(ticker)
+    hist = (ticker_obj.history(period="10d"))
+    stock_data[ticker] = hist["Close"].tolist()
+    myarray = np.array(stock_data)
+
