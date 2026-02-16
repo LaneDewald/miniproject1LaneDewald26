@@ -21,12 +21,36 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
+os.makedirs("Charts", exist_ok=True)
+
 tickers = ['AAPL', 'PINS', 'GOOGL', 'AMZN', 'RIVN']
 
 stock_data = {}
+
 for ticker in tickers:
+    #Fetching data via API
     ticker_obj = yf.Ticker(ticker)
-    hist = (ticker_obj.history(period="10d"))
-    stock_data[ticker] = hist["Close"].tolist()
-    myarray = np.array(stock_data)
+    hist = ticker_obj.history(period="10d")
+
+    #Store in list
+    prices_list = hist["Close"].tolist()
+
+    #Convert that list to a NumPy array
+    prices_array = np.array(prices_list)
+
+    # 4. Plotting
+    plt.figure(figsize=(10, 5))
+    plt.plot(prices_array, label=f"{ticker} Close", color="navy", linewidth=1.5, marker='o')
+
+    plt.xlabel("Days (Last 10)")
+    plt.ylabel("Closing Price (USD)")
+    plt.title(f"10-Day Trend for {ticker}")
+    plt.grid(True, linestyle='--', alpha=0.6)
+    plt.legend()
+
+    #Save to the charts folder
+    plt.savefig(f"charts/{ticker}.png")
+
+print("Success: 5 charts generated in the /charts folder.")
+
 
